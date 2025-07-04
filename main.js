@@ -1,13 +1,21 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.124/build/three.module.js';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.124/examples/jsm/controls/OrbitControls.js';
+import { Weapon } from './weapon.js';
 import { player } from './player.js';
 import { object } from './object.js';
-import { hp } from './hp.js';
 import { math } from './math.js';
+import { ui } from './ui.js';
+import { hp } from './hp.js';
+
+// 전역에서 한 번만 생성
+const gameUI = new ui.GameUI();
+const hpUI = new hp.HPUI();
+hpUI.setGameUI(gameUI); // 반드시 연결!
 
 class GameStage3 {
     constructor() {
-        this.hpUI = new hp.HPUI();
+        // 이미 생성된 hpUI를 사용
+        this.hpUI = hpUI;
         this.Initialize();
         this.RAF();
     }
@@ -39,6 +47,7 @@ class GameStage3 {
         this.SetupLighting();
         this.SetupSkyAndFog();
         this.CreateGround();
+        this.CreateWeapons();
         this.CreatePlayer();
 
         window.addEventListener('resize', () => this.OnWindowResize(), false);
@@ -107,16 +116,15 @@ class GameStage3 {
     CreateGround() {
         // 잔디 텍스처
         const textureLoader = new THREE.TextureLoader();
-        const grassTexture = textureLoader.load('resources/ground.jpeg');
+        const grassTexture = textureLoader.load('resources/Map.png');
         grassTexture.wrapS = THREE.RepeatWrapping;
         grassTexture.wrapT = THREE.RepeatWrapping;
-        grassTexture.repeat.set(10, 10);
+        grassTexture.repeat.set(2, 2);
 
         // 바닥 메쉬
-        const groundGeometry = new THREE.PlaneGeometry(200, 200, 10, 10);
+        const groundGeometry = new THREE.PlaneGeometry(80, 80, 10, 10);
         const groundMaterial = new THREE.MeshLambertMaterial({
             map: grassTexture,
-            color: 0x81c147,
         });
         this.ground = new THREE.Mesh(groundGeometry, groundMaterial);
         this.ground.rotation.x = -Math.PI / 2;
@@ -127,7 +135,11 @@ class GameStage3 {
 
     CreatePlayer() {
         // 플레이어 생성 및 HP UI 연결
-        this.player_ = new player.Player({ scene: this.scene });
+        this.player_ = new player.Player({
+            scene: this.scene,
+            hpUI: this.hpUI,
+            weapons: this.weapons_
+        });
         this.hpUI.setPlayer(this.player_);
 
         // NPC 생성
@@ -150,6 +162,17 @@ class GameStage3 {
             }
         };
         checkAndRenderFace();
+    }
+
+    CreateWeapons() {
+        this.weapons_ = [];
+        const weaponNames = ['Sword.fbx', 'Axe_Double.fbx', 'Bow_Wooden.fbx', 'Dagger.fbx', 'Hammer_Double.fbx'];
+        for (let i = 0; i < 5; i++) {
+            const weaponName = weaponNames[i];
+            const pos = new THREE.Vector3(math.rand_int(-20, 20), 1, math.rand_int(-20, 20));
+            const weapon = new Weapon(this.scene, weaponName, pos);
+            this.weapons_.push(weapon);
+        }
     }
 
     OnMouseMove(event) {
