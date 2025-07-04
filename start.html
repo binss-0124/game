@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>게임 시작 화면</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      background: #111;
+      font-family: 'Orbitron', 'Arial Black', 'sans-serif';
+    }
+    /* 배경 애니메이션 */
+    .bg-scroll {
+      position: fixed;
+      top: 0; left: 0;
+      width: 200vw;
+      height: 100vh;
+      background: url('Map.png') repeat-x center center;
+      background-size: 50% auto;
+      z-index: 0;
+      animation: bgmove 40s linear infinite;
+      opacity: 0.7;
+    }
+    @keyframes bgmove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50vw); }
+    }
+    /* 중앙 컨텐츠 */
+    .center-box {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      background: rgba(20, 24, 40, 0.85);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px #000b, 0 0 0 6px #ffec7040 inset;
+      padding: 48px 64px 40px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 340px;
+    }
+    .game-title {
+      font-size: 48px;
+      font-weight: 900;
+      color: #ffec70;
+      letter-spacing: 4px;
+      text-shadow: 0 4px 24px #000b, 0 0 12px #ffec70cc;
+      margin-bottom: 32px;
+      font-family: 'Orbitron', 'Arial Black', 'sans-serif';
+      text-align: center;
+      user-select: none;
+    }
+    .play-btn {
+      font-size: 32px;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(90deg, #ffec70 0%, #ffb300 100%);
+      border: none;
+      border-radius: 16px;
+      padding: 18px 64px;
+      box-shadow: 0 2px 16px #0008, 0 0 0 3px #fff4 inset;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 12px;
+      letter-spacing: 2px;
+      font-family: 'Orbitron', 'Arial Black', 'sans-serif';
+    }
+    .play-btn:hover {
+      background: linear-gradient(90deg, #ffe066 0%, #ff9800 100%);
+      transform: scale(1.05);
+      color: #23234d;
+    }
+    .credit {
+      margin-top: 36px;
+      color: #fff8;
+      font-size: 15px;
+      letter-spacing: 1px;
+      text-align: center;
+      user-select: none;
+    }
+    @media (max-width: 600px) {
+      .center-box { min-width: 0; padding: 24px 8vw 24px 8vw; }
+      .game-title { font-size: 32px; }
+      .play-btn { font-size: 22px; padding: 12px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-scroll"></div>
+  <div class="center-box">
+    <div class="game-title">GAME START</div>
+    <button class="play-btn" onclick="location.href='index.html'">PLAY</button>
+    <div class="credit">ⓒ 2025 My Game Studio</div>
+  </div>
+</body>
+</html>

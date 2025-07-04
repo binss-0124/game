@@ -217,6 +217,7 @@ class GameStage3 {
         }
         this.renderer.render(this.scene, this.camera);
     }
+    
 }
 
 // 게임 인스턴스 생성

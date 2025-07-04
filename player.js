@@ -165,7 +165,7 @@ export const player = (() => {
     LoadModel_() {
       const loader = new GLTFLoader();
       loader.setPath('./resources/char/glTF/');
-      loader.load('cow.gltf', (gltf) => {
+      loader.load('Chef_Hat.gltf', (gltf) => {
         const model = gltf.scene;
         model.scale.setScalar(1);
         model.quaternion.setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
